@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Button } from "../components/ui/button";
@@ -16,7 +16,7 @@ const FormSection = () => {
   useEffect(() => {
     axios.get("https://ipapi.co/json/")
       .then((res) => {
-        const code = res.data.country_calling_code; // masalan, +998
+        const code = res.data.country_calling_code;
         if (code) setCountryCode(code);
       })
       .catch((err) => {
@@ -29,13 +29,12 @@ const FormSection = () => {
 
     let digitsOnly = rawValue.replace(/\D/g, "");
 
-    // Davlat kodi bo‘yicha kesamiz, faqat koddan keyingi raqamlar qoladi
     const cleanedCountryCode = countryCode.replace(/\D/g, "");
     if (!digitsOnly.startsWith(cleanedCountryCode)) {
       digitsOnly = cleanedCountryCode + digitsOnly;
     }
 
-    digitsOnly = digitsOnly.slice(0, cleanedCountryCode.length + 9); // masalan, 998 + 9 ta raqam
+    digitsOnly = digitsOnly.slice(0, cleanedCountryCode.length + 9);
 
     const dynamicMask = `${countryCode} (99) 999-99-99`;
     const masked = mask(digitsOnly, dynamicMask);
@@ -85,7 +84,6 @@ const FormSection = () => {
       return;
     }
 
-    // Tozalash yoki yuborish
     setErrors({});
     console.log("Yuborildi:", { name, phone });
   };
@@ -112,7 +110,6 @@ const FormSection = () => {
               onSubmit={handleSubmit}
               className="flex flex-col sm:flex-row sm:flex-wrap gap-5 sm:gap-6 md:gap-7 justify-center px-4"
             >
-              {/* Name field + error */}
               <div className="w-full sm:w-[48%] flex flex-col gap-1">
                 <input
                   type="text"
@@ -127,7 +124,6 @@ const FormSection = () => {
                 )}
               </div>
 
-              {/* Phone field + error */}
               <div className="w-full sm:w-[48%] flex flex-col gap-1">
                 <input
                   type="tel"
@@ -144,7 +140,6 @@ const FormSection = () => {
                 )}
               </div>
 
-              {/* Submit button */}
               <Button
                 type="submit"
                 size={"lg"}
