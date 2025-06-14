@@ -1,0 +1,59 @@
+{
+    "heroTitle": "Parazitlarsiz baxtli bolalik uchun",
+    "heroSubtitle": "Gelmin Kids - halol, tabiiy va xavfsiz gijjalarga qarshi vosita",
+
+    "simptom": {
+        "1": "Qorin og'rig'i",
+        "2": "Asabiylik",
+        "3": "Ishtahasizlik"
+    },
+
+    "card": {
+        "title": "Parazitlarga qarshi tabiiy yechim",
+        "subtitle": "Gelmin Kids — tabiiy himoya va qulay foydalanish"
+    },
+
+    "parasite": {
+        "title": "Parazit turlari",
+        "1": {
+            "title": "Ostritsa",
+            "subtitle": "Qorin og'rig'i, qichishish, uyqusizlik"
+        },
+        "2": {
+            "title": "Lentasimon",
+            "subtitle": "Ishtahasizlik, vazn yo'qotish, kuchsizlik"
+        },
+        "3": {
+            "title": "Lyambliya",
+            "subtitle": "Bezovtalik, ko'ngil aynishi, ich ketishi"
+        },
+        "4": {
+            "title": "Pakana gijja",
+            "subtitle": "Charchoq, allergiya, diqqat susayishi"
+        },
+        "5": {
+            "title": "Askarida",
+            "subtitle": "Asabiylik, yo'tal, qorin dam bo'lishi"
+        }
+    },
+
+    "recommendation": {
+        "title": "1000+ ota-ona tavsiya qiladi",
+        "subtitle": "Gelmin Kids real natija bergan va minglab oilalar tomonidan sinovdan o'tgan."
+    },
+
+    "form": {
+        "title": "Bolangiz salomatligi uchun bugunoq buyurtma bering",
+        "subtitle": "🚚 O'zbekiston bo'ylab bepul yetkazib berish",
+        "input": {
+            "name": "Ism",
+            "phone": "Telefon raqam"
+        }
+    },
+
+    "button": {
+        "heroButton": "Buyurtma berish",
+        "consultationButton": "Konsultatsiya olish",
+        "formButton": "Ariza qoldirish"
+    }
+}
