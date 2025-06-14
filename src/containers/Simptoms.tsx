@@ -35,6 +35,7 @@ const Simptoms = () => {
         <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 xl:gap-16 justify-center items-center">
           {simptomsData.map((item, index) => (
             <motion.div
+              key={index}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
@@ -42,7 +43,6 @@ const Simptoms = () => {
               className="text-white text-2xl"
             >
               <div
-                key={index}
                 className="flex flex-col items-center text-center gap-4 sm:gap-6 max-w-[300px] w-full mx-auto"
               >
                 <img

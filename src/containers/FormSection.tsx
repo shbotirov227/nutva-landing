@@ -1,62 +1,93 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Button } from "../components/ui/button";
-import MaskedInput from "react-text-mask";
 import Container from "../components/Container";
-
-type PhoneInputMaskProps = {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
-};
-
-const PhoneInputMask = ({ value, onChange, placeholder }: PhoneInputMaskProps) => {
-  return (
-    <MaskedInput
-      mask={[
-        "+",
-        "9",
-        "9",
-        "8",
-        " ",
-        "(",
-        /[1-9]/,
-        /\d/,
-        ")",
-        " ",
-        /\d/,
-        /\d/,
-        /\d/,
-        "-",
-        /\d/,
-        /\d/,
-        "-",
-        /\d/,
-        /\d/,
-      ]}
-      guide={false}
-      value={value}
-      onChange={onChange}
-      render={(ref, props) => (
-        <input
-          {...props}
-          ref={ref as React.Ref<HTMLInputElement>}
-          placeholder={placeholder}
-          className="w-full sm:w-[48%] px-5 py-4 rounded-xl text-[#6F6F6F] text-[15px] sm:text-base md:text-[17px] font-bold bg-white outline-none border-none focus:shadow-[0_0_10px_rgba(0,0,0,0.1),_0_0_10px_rgba(0,0,0,0.15)] transition-all"
-        />
-      )}
-    />
-  );
-};
+import { mask } from "remask";
+import axios from "axios";
 
 const FormSection = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+998");
+  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
   const { t } = useTranslation();
+
+  useEffect(() => {
+    axios.get("https://ipapi.co/json/")
+      .then((res) => {
+        const code = res.data.country_calling_code; // masalan, +998
+        if (code) setCountryCode(code);
+      })
+      .catch((err) => {
+        console.error("IP orqali aniqlashda xatolik:", err);
+      });
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value;
+
+    let digitsOnly = rawValue.replace(/\D/g, "");
+
+    // Davlat kodi bo‘yicha kesamiz, faqat koddan keyingi raqamlar qoladi
+    const cleanedCountryCode = countryCode.replace(/\D/g, "");
+    if (!digitsOnly.startsWith(cleanedCountryCode)) {
+      digitsOnly = cleanedCountryCode + digitsOnly;
+    }
+
+    digitsOnly = digitsOnly.slice(0, cleanedCountryCode.length + 9); // masalan, 998 + 9 ta raqam
+
+    const dynamicMask = `${countryCode} (99) 999-99-99`;
+    const masked = mask(digitsOnly, dynamicMask);
+
+    setPhone(masked);
+  };
+
+  const handleFocus = () => {
+    if (phone.trim() === "") {
+      setPhone(`${countryCode} `);
+    }
+  };
+
+  const handleBlur = () => {
+    const digitsOnly = phone.replace(/\D/g, "");
+    const cleanedCountryCode = countryCode.replace(/\D/g, "");
+
+    if (
+      digitsOnly === "" ||
+      digitsOnly === cleanedCountryCode ||
+      digitsOnly.startsWith(cleanedCountryCode) &&
+      digitsOnly.length <= cleanedCountryCode.length + 1
+    ) {
+      setPhone("");
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newErrors: { name?: string; phone?: string } = {};
+
+    if (!name.trim()) {
+      newErrors.name = t("form.errors.nameRequired") || "Ism kiritilishi kerak";
+    }
+
+    const digitsOnly = phone.replace(/\D/g, "");
+    const cleanedCode = countryCode.replace(/\D/g, "");
+    const phoneLength = digitsOnly.length - cleanedCode.length;
+
+    if (!digitsOnly || phoneLength < 9) {
+      newErrors.phone = t("form.errors.phoneRequired") || "To‘liq telefon raqam kiritilishi kerak";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Tozalash yoki yuborish
+    setErrors({});
+    console.log("Yuborildi:", { name, phone });
   };
 
   return (
@@ -81,20 +112,39 @@ const FormSection = () => {
               onSubmit={handleSubmit}
               className="flex flex-col sm:flex-row sm:flex-wrap gap-5 sm:gap-6 md:gap-7 justify-center px-4"
             >
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={t("form.input.name")}
-                className="w-full sm:w-[48%] px-5 py-4 rounded-xl text-[#6F6F6F] text-[15px] sm:text-base md:text-[17px] font-bold bg-white outline-none border-none focus:shadow-[0_0_10px_rgba(0,0,0,0.1),_0_0_10px_rgba(0,0,0,0.15)] transition-all"
-              />
+              {/* Name field + error */}
+              <div className="w-full sm:w-[48%] flex flex-col gap-1">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={t("form.input.name")}
+                  className={`px-5 py-4 rounded-xl text-[#6F6F6F] text-[15px] sm:text-base md:text-[17px] font-bold bg-white outline-none border-2 ${errors.name ? "border-red-500" : "border-transparent"
+                    } focus:shadow-[0_0_10px_rgba(0,0,0,0.1),_0_0_10px_rgba(0,0,0,0.15)] transition-all`}
+                />
+                {errors.name && (
+                  <p className="text-red-600 text-sm font-bold">{errors.name}</p>
+                )}
+              </div>
 
-              <PhoneInputMask
-                value={phone}
-                placeholder={t("form.input.phone")}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
-              />
+              {/* Phone field + error */}
+              <div className="w-full sm:w-[48%] flex flex-col gap-1">
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  placeholder={t("form.input.phone")}
+                  className={`px-5 py-4 rounded-xl text-[#6F6F6F] text-[15px] sm:text-base md:text-[17px] font-bold bg-white outline-none border-2 ${errors.phone ? "border-red-500" : "border-transparent"
+                    } focus:shadow-[0_0_10px_rgba(0,0,0,0.1),_0_0_10px_rgba(0,0,0,0.15)] transition-all`}
+                />
+                {errors.phone && (
+                  <p className="text-red-600 text-sm font-bold">{errors.phone}</p>
+                )}
+              </div>
 
+              {/* Submit button */}
               <Button
                 type="submit"
                 size={"lg"}

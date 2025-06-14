@@ -48,6 +48,10 @@
         "input": {
             "name": "Ism",
             "phone": "Telefon raqam"
+        },
+        "errors": {
+            "nameRequired": "Ism kiritilishi shart",
+            "phoneRequired": "Telefon raqami to‘liq bo‘lishi kerak"
         }
     },
 
