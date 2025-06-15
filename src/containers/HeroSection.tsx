@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import Container from "../components/Container";
+import { Button } from "@/components/ui/button";
+import Container from "@/components/Container";
 import ProductImage from "@/assets/product-img.png";
-import HeroBg from "../assets/hero-bg.png";
+import HeroBg from "@/assets/hero-bg.png";
 
 const HeroSection = () => {
   const { t } = useTranslation();

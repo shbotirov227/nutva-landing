@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import HeroSection from "./containers/HeroSection";
-import Simptoms from "./containers/Simptoms";
-import CardSection from "./containers/CardSection";
-import Benefits from "./containers/Benefits";
-import ParasitesSection from "./containers/ParasitesSection";
-import RecommendationSection from "./containers/RecommendationSection";
-import FormSection from "./containers/FormSection";
+import HeroSection from "@/containers/HeroSection";
+import Simptoms from "@/containers/Simptoms";
+import CardSection from "@/containers/CardSection";
+import Benefits from "@/containers/Benefits";
+import ParasitesSection from "@/containers/ParasitesSection";
+import RecommendationSection from "@/containers/RecommendationSection";
+import FormSection from "@/containers/FormSection";
 import { motion } from "framer-motion";
 
 function App() {

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import Container from "../components/Container";
-import DoctorImage from "../assets/recommendation-img.png";
+import Container from "@/components/Container";
+import DoctorImage from "@/assets/recommendation-img.png";
 
 const RecommendationSection = () => {
   const { t } = useTranslation();

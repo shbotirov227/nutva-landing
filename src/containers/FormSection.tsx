@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { Button } from "../components/ui/button";
-import Container from "../components/Container";
+import { Button } from "@/components/ui/button";
+import Container from "@/components/Container";
 import { mask } from "remask";
 import axios from "axios";
 

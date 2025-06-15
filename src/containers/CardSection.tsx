@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import CardImage from "../assets/product-img.png";
-import Container from "../components/Container";
+import CardImage from "@/assets/product-img.png";
+import Container from "@/components/Container";
 import { Card, CardContent, CardDescription, CardTitle } from "../components/ui/card";
 import { motion } from "framer-motion";
 

@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import BenefitsImage1 from "../assets/benefits-img1.png";
-import BenefitsImage2 from "../assets/benefits-img2.png";
-import BenefitsImage3 from "../assets/benefits-img3.png";
-import BenefitsImage4 from "../assets/benefits-img4.png";
-import BenefitsImage5 from "../assets/benefits-img5.png";
-import Container from "../components/Container";
-import { Button } from "../components/ui/button";
+import BenefitsImage1 from "@/assets/benefits-img1.png";
+import BenefitsImage2 from "@/assets/benefits-img2.png";
+import BenefitsImage3 from "@/assets/benefits-img3.png";
+import BenefitsImage4 from "@/assets/benefits-img4.png";
+import BenefitsImage5 from "@/assets/benefits-img5.png";
+import Container from "@/components/Container";
+import { Button } from "@/components/ui/button";
 
 const benefitsImages = [
   BenefitsImage1,

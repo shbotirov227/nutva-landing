@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
-import Container from "../components/Container";
-import ParasiteImage1 from "../assets/parasite-img1.png";
-import ParasiteImage2 from "../assets/parasite-img2.png";
-import ParasiteImage3 from "../assets/parasite-img3.png";
-import ParasiteImage4 from "../assets/parasite-img4.png";
-import ParasiteImage5 from "../assets/parasite-img5.png";
+import Container from "@/components/Container";
+import ParasiteImage1 from "@/assets/parasite-img1.png";
+import ParasiteImage2 from "@/assets/parasite-img2.png";
+import ParasiteImage3 from "@/assets/parasite-img3.png";
+import ParasiteImage4 from "@/assets/parasite-img4.png";
+import ParasiteImage5 from "@/assets/parasite-img5.png";
 import { motion } from "framer-motion";
 
 const ParasitesSection = () => {

@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import Image1 from "../assets/simptom-img1.png";
-import Image2 from "../assets/simptom-img2.png";
-import Image3 from "../assets/simptom-img3.png";
-import Container from "../components/Container";
+import Image1 from "@/assets/simptom-img1.png";
+import Image2 from "@/assets/simptom-img2.png";
+import Image3 from "@/assets/simptom-img3.png";
+import Container from "@/components/Container";
 
 const Simptoms = () => {
   const { t } = useTranslation();
