@@ -69,5 +69,11 @@
         "consultationButton": "Konsultatsiya olish",
         "formButton": "Ariza qoldirish",
         "cancelButton": "Bekor qilish"
+    },
+
+    "success": {
+        "title": "Arizangiz qabul qilindi!",
+        "subtitle": "Yangiliklardan xabardor bo'lish va bizni yo'qotib qo'ymaslik uchun Telegram kanalga o'ting",
+        "cta": "Telegram kanalga qo'shilish"
     }
 }

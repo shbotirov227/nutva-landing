@@ -86,22 +86,22 @@ const FormSection = () => {
       return;
     }
 
-    const success = await sendToBitrix({
+    const searchParams = new URLSearchParams(window.location.search);
+    const result = await sendToBitrix({
       name: trimmedName,
       phone,
-      utm_source: localStorage.getItem("utm_source") || undefined,
-      utm_medium: localStorage.getItem("utm_medium") || undefined,
-      utm_campaign: localStorage.getItem("utm_campaign") || undefined,
-      utm_term: localStorage.getItem("utm_term") || undefined,
-      utm_content: localStorage.getItem("utm_content") || undefined,
+      utm_source: searchParams.get("utm_source") || undefined,
+      utm_medium: searchParams.get("utm_medium") || undefined,
+      utm_campaign: searchParams.get("utm_campaign") || undefined,
+      utm_term: searchParams.get("utm_term") || undefined,
+      utm_content: searchParams.get("utm_content") || undefined,
     });
-
-    if (success) {
+    if (result) {
       toast.success(t("form.success") || "Buyurtma muvaffaqiyatli yuborildi");
       setName("");
       setPhone("");
 
-      console.log("Success", success);
+      console.log("Success", result);
     } else {
       toast.error("Ma'lumot yuborishda xatolik yuz berdi");
     }

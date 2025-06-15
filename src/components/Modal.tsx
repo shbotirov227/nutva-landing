@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { sendToBitrix } from "@/lib/sendToBitrix";
 import { FormInputWrapper } from "./FormInputWrapper";
 import PhoneField from "./PhoneField";
+import i18n from "@/i18n";
 
 type FormModalProps = {
   children: React.ReactElement<React.HTMLAttributes<HTMLButtonElement>>;
@@ -72,7 +74,7 @@ export function FormModal({ children }: FormModalProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const trimmedName = name.trim();
@@ -108,9 +110,28 @@ export function FormModal({ children }: FormModalProps) {
     }
 
     setErrors({});
-    toast.success(t("form.success") || "Buyurtma muvaffaqiyatli qabul qilindi");
-    setName("");
-    setPhone("");
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const result = await sendToBitrix({
+      name: trimmedName,
+      phone,
+      utm_source: searchParams.get("utm_source") || undefined,
+      utm_medium: searchParams.get("utm_medium") || undefined,
+      utm_campaign: searchParams.get("utm_campaign") || undefined,
+      utm_term: searchParams.get("utm_term") || undefined,
+      utm_content: searchParams.get("utm_content") || undefined,
+    });
+
+    if (result) {
+      // toast.success(t("form.success") || "Buyurtma muvaffaqiyatli qabul qilindi");
+
+      const lang = i18n.language || "uz";
+      window.location.href = `/${lang}/success`;
+      return;
+
+    } else {
+      toast.error(t("form.error") || "Yuborishda xatolik yuz berdi");
+    }
   };
 
 
