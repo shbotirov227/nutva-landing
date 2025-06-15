@@ -55,7 +55,7 @@ const Benefits = () => {
             variant="destructive"
             className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-[40%] rounded-2xl bg-[#FD902B] hover:bg-amber-600 text-white text-base sm:text-lg md:text-xl py-5 sm:py-6 lg:py-7"
           >
-            {t("button.heroButton")}
+            {t("button.consultationButton")}
           </Button>
         </FormModal>
       </Container>
