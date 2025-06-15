@@ -3,8 +3,11 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";
-import { mask } from "remask";
 import { toast } from "react-toastify";
+import PhoneField from "@/components/PhoneField";
+import { FormInputWrapper } from "@/components/FormInputWrapper";
+import { sendToBitrix } from "@/lib/sendToBitrix";
+import { sendFormData } from "@/lib/sendFormData";
 
 const FormSection = () => {
   const [name, setName] = useState("");
@@ -13,42 +16,42 @@ const FormSection = () => {
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
   const { t } = useTranslation();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let digitsOnly = e.target.value.replace(/\D/g, "");
-    const cleanedCountryCode = countryCode.replace(/\D/g, "");
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   let digitsOnly = e.target.value.replace(/\D/g, "");
+  //   const cleanedCountryCode = countryCode.replace(/\D/g, "");
 
-    if (!digitsOnly.startsWith(cleanedCountryCode)) {
-      digitsOnly = cleanedCountryCode + digitsOnly;
-    }
+  //   if (!digitsOnly.startsWith(cleanedCountryCode)) {
+  //     digitsOnly = cleanedCountryCode + digitsOnly;
+  //   }
 
-    digitsOnly = digitsOnly.slice(0, cleanedCountryCode.length + 9);
-    const dynamicMask = `${countryCode} (99) 999-99-99`;
-    const masked = mask(digitsOnly, dynamicMask);
+  //   digitsOnly = digitsOnly.slice(0, cleanedCountryCode.length + 9);
+  //   const dynamicMask = `${countryCode} (99) 999-99-99`;
+  //   const masked = mask(digitsOnly, dynamicMask);
 
-    setPhone(masked);
-  };
+  //   setPhone(masked);
+  // };
 
-  const handleFocus = () => {
-    if (phone.trim() === "") {
-      setPhone(`${countryCode} `);
-    }
-  };
+  // const handleFocus = () => {
+  //   if (phone.trim() === "") {
+  //     setPhone(`${countryCode} `);
+  //   }
+  // };
 
-  const handleBlur = () => {
-    const digitsOnly = phone.replace(/\D/g, "");
-    const cleanedCountryCode = countryCode.replace(/\D/g, "");
+  // const handleBlur = () => {
+  //   const digitsOnly = phone.replace(/\D/g, "");
+  //   const cleanedCountryCode = countryCode.replace(/\D/g, "");
 
-    if (
-      digitsOnly === "" ||
-      digitsOnly === cleanedCountryCode ||
-      (digitsOnly.startsWith(cleanedCountryCode) &&
-        digitsOnly.length <= cleanedCountryCode.length + 1)
-    ) {
-      setPhone("");
-    }
-  };
+  //   if (
+  //     digitsOnly === "" ||
+  //     digitsOnly === cleanedCountryCode ||
+  //     (digitsOnly.startsWith(cleanedCountryCode) &&
+  //       digitsOnly.length <= cleanedCountryCode.length + 1)
+  //   ) {
+  //     setPhone("");
+  //   }
+  // };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const trimmedName = name.trim();
@@ -83,10 +86,30 @@ const FormSection = () => {
       return;
     }
 
+    const success = await sendToBitrix({
+      name: trimmedName,
+      phone,
+      utm_source: localStorage.getItem("utm_source") || undefined,
+      utm_medium: localStorage.getItem("utm_medium") || undefined,
+      utm_campaign: localStorage.getItem("utm_campaign") || undefined,
+      utm_term: localStorage.getItem("utm_term") || undefined,
+      utm_content: localStorage.getItem("utm_content") || undefined,
+    });
+
+    if (success) {
+      toast.success(t("form.success") || "Buyurtma muvaffaqiyatli yuborildi");
+      setName("");
+      setPhone("");
+
+      console.log("Success", success);
+    } else {
+      toast.error("Ma'lumot yuborishda xatolik yuz berdi");
+    }
+
     setErrors({});
-    toast.success(t("form.success") || "Buyurtma muvaffaqiyatli qabul qilindi");
-    setName("");
-    setPhone("");
+    // toast.success(t("form.success") || "Buyurtma muvaffaqiyatli qabul qilindi");
+    // setName("");
+    // setPhone("");
   };
 
 
@@ -99,12 +122,14 @@ const FormSection = () => {
       viewport={{ once: true }}
       className="text-white text-2xl"
     >
-      <section id="form-section" className="w-full py-10 pb-16">
+      <section id="form-section" className="w-full py-10 pb-56">
         <Container>
           <div className="bg-[#FD902B] rounded-3xl shadow-xl px-4 sm:px-8 md:px-14 lg:px-20 py-10 max-w-[95%] sm:max-w-3xl md:max-w-4xl lg:max-w-5xl mx-auto">
+
             <h2 className="text-white text-[24px] sm:text-[32px] md:text-[36px] font-bold text-center mb-3">
               {t("form.title")}
             </h2>
+
             <h4 className="text-white text-[16px] sm:text-[20px] md:text-[22px] font-semibold text-center mb-8">
               {t("form.subtitle")}
             </h4>
@@ -113,35 +138,27 @@ const FormSection = () => {
               onSubmit={handleSubmit}
               className="flex flex-col sm:flex-row sm:flex-wrap gap-5 sm:gap-6 md:gap-7 justify-center px-4"
             >
-              <div className="w-full sm:w-[48%] flex flex-col gap-1">
+
+              <FormInputWrapper error={errors.name}>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={t("form.input.name")}
                   className={`px-5 py-4 rounded-xl text-[#6F6F6F] text-[15px] sm:text-base md:text-[17px] font-bold bg-white outline-none border-2 ${errors.name ? "border-red-500" : "border-transparent"
-                    } focus:shadow-[0_0_10px_rgba(0,0,0,0.1),_0_0_10px_rgba(0,0,0,0.15)] transition-all`}
+                    } focus:shadow-[0_0_10px_rgba(0,0,0,0.1),_0_0_10px_rgba(0,0,0,0.7)] transition-all`}
                 />
-                {errors.name && (
-                  <p className="text-red-600 text-sm font-bold">{errors.name}</p>
-                )}
-              </div>
+              </FormInputWrapper>
 
-              <div className="w-full sm:w-[48%] flex flex-col gap-1">
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
+              <FormInputWrapper error={errors.phone}>
+                <PhoneField
                   placeholder={t("form.input.phone")}
-                  className={`px-5 py-4 rounded-xl text-[#6F6F6F] text-[15px] sm:text-base md:text-[17px] font-bold bg-white outline-none border-2 ${errors.phone ? "border-red-500" : "border-transparent"
-                    } focus:shadow-[0_0_10px_rgba(0,0,0,0.1),_0_0_10px_rgba(0,0,0,0.15)] transition-all`}
+                  phone={phone}
+                  setPhone={setPhone}
+                  setErrors={setErrors}
+                  errors={errors}
                 />
-                {errors.phone && (
-                  <p className="text-red-600 text-sm font-bold">{errors.phone}</p>
-                )}
-              </div>
+              </FormInputWrapper>
 
               <Button
                 type="submit"
@@ -150,6 +167,7 @@ const FormSection = () => {
               >
                 {t("button.formButton")}
               </Button>
+
             </form>
           </div>
         </Container>

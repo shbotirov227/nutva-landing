@@ -54,7 +54,9 @@
             "phoneRequired": "Номер телефона должен быть полностью указан"
         },
         "success": "Заказ успешно принят",
-        "fillAllFields": "Заполните все поля"
+        "fillAllFields": "Заполните все поля",
+        "searchCountry": "Поиск...",
+        "searchCountryNotFound": "Страна не найдена"
     },
 
     "formModal": {

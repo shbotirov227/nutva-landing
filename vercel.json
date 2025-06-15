@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+        {
+            "source": "/(uz|ru)",
+            "destination": "/"
+        },
+        {
+            "source": "/(uz|ru)/(.*)",
+            "destination": "/$2"
+        }
+    ]
+}

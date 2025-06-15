@@ -54,7 +54,9 @@
             "phoneRequired": "Telefon raqami to'liq bo'lishi kerak"
         },
         "success": "Buyurtma muvaffaqiyatli qabul qilindi",
-        "fillAllFields": "Barcha maydonlarni to'ldiring"
+        "fillAllFields": "Barcha maydonlarni to'ldiring",
+        "searchCountry": "Qidirish...",
+        "searchCountryNotFound": "Ushbu davlat topilmadi"
     },
 
     "formModal": {

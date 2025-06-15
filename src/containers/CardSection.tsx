@@ -16,7 +16,7 @@ const CardSection = () => {
       viewport={{ once: true }}
       className="text-white text-2xl"
     >
-      <Container className="flex flex-col md:flex-row items-center justify-between gap-6 py-6 px-4 md:px-6 lg:px-8 z-10 relative md:!my-0">
+      <Container className="flex flex-col md:flex-row items-center justify-between gap-6 py-6 px-4 md:px-6 lg:px-8 z-1 relative md:!my-0">
         <Card className="w-full md:w-[70%] lg:w-[70%] xl:w-[55%] sm:w-[100%] bg-[#FD902B] border-none shadow-lg p-6 md:p-8 rounded-2xl max-[768px]:!p-12 !pr-25">
           <CardContent className="flex flex-col gap-4">
             <CardTitle className="text-white text-4xl sm:text-3xl max-[768px]:text-center md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
