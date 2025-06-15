@@ -17,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<RedirectToLang />} />
         <Route path="/:lang" element={<App />} />
         <Route path="/:lang/success" element={<SuccessPage />} />
+        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
       <ToastContainer
         position="top-center"
