@@ -16,13 +16,13 @@ function App() {
   const { i18n } = useTranslation()
 
   useEffect(() => {
-    const langCode = lang ?? i18n.language
+    const langCode = lang ?? i18n.language;
     if (langCode && ['uz', 'ru'].includes(langCode)) {
-      i18n.changeLanguage(langCode)
+      i18n.changeLanguage(langCode);
     } else {
-      i18n.changeLanguage('uz')
+      i18n.changeLanguage('uz');
     }
-  }, [lang, i18n])
+  }, [lang, i18n]);
 
   return (
     <div className="App bg-[#FFF3D9]">

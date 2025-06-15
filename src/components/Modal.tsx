@@ -2,7 +2,6 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-// import { mask } from "remask";
 import { toast } from "react-toastify";
 import { FormInputWrapper } from "./FormInputWrapper";
 import PhoneField from "./PhoneField";
@@ -17,6 +16,8 @@ export function FormModal({ children }: FormModalProps) {
   const [phone, setPhone] = React.useState("");
   const [countryCode] = React.useState("+998");
   const [errors, setErrors] = React.useState<{ name?: string; phone?: string }>({});
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [dropUp, setDropUp] = React.useState(false);
   const { t } = useTranslation();
 
   // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +55,22 @@ export function FormModal({ children }: FormModalProps) {
   //     setPhone("");
   //   }
   // };
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      setDropUp(spaceBelow < 300 && spaceAbove > 300); // 300px dropdown sig'adi
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -156,6 +173,12 @@ export function FormModal({ children }: FormModalProps) {
                     setPhone={setPhone}
                     setErrors={setErrors}
                     className={inputSharedStyle}
+                    containerRef={containerRef}
+                    dropdownStyle={{
+                      top: dropUp ? "auto" : undefined,
+                      bottom: dropUp ? "100%" : undefined,
+                      transform: dropUp ? "translateY(-5px)" : "translateY(0)",
+                    }}
                   />
                 </FormInputWrapper>
 

@@ -1,18 +1,15 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function RedirectToLang() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-  const preferredLang = navigator.languages.find(l =>
-    l.startsWith('ru') || l.startsWith('uz')
-  );
-  const selectedLang = preferredLang?.startsWith('ru') ? 'ru' : 'uz';
-  navigate(`/${selectedLang}`, { replace: true });
-}, []);
-
+    if (location.pathname === "/") {
+      navigate("/uz", { replace: true });
+    }
+  }, [location.pathname]);
 
   return null;
 }
-

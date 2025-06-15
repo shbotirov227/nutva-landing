@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import PhoneField from "@/components/PhoneField";
 import { FormInputWrapper } from "@/components/FormInputWrapper";
 import { sendToBitrix } from "@/lib/sendToBitrix";
-import { sendFormData } from "@/lib/sendFormData";
+// import { sendFormData } from "@/lib/sendFormData";
 
 const FormSection = () => {
   const [name, setName] = useState("");

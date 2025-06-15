@@ -12,9 +12,11 @@ interface PhoneFieldProps {
   setErrors: React.Dispatch<React.SetStateAction<{ name?: string; phone?: string }>>;
   errors?: { name?: string; phone?: string };
   className?: string;
+  containerRef?: React.RefObject<HTMLDivElement | null>;
+  dropdownStyle?: React.CSSProperties;
 }
 
-const PhoneField = ({ placeholder, phone, setPhone, setErrors, errors, className }: PhoneFieldProps) => {
+const PhoneField = ({ placeholder, phone, setPhone, setErrors, errors, className, containerRef, dropdownStyle }: PhoneFieldProps) => {
   const [defaultCountry, setDefaultCountry] = useState<string>("");
   const { t } = useTranslation();
 
@@ -32,46 +34,49 @@ const PhoneField = ({ placeholder, phone, setPhone, setErrors, errors, className
   const errorBorder = errors?.phone ? "!border-red-500" : "!border-transparent";
 
   return (
-    <PhoneInput
-      country={defaultCountry}
-      searchPlaceholder={t("form.searchCountry")}
-      searchNotFound={t("form.searchCountryNotFound")}
-      searchStyle={{
-        width: "85%",
-        borderRadius: "10px",
-        padding: "10px",
-        color: "#6F6F6F",
-        border: "1px solid #D9D9D9",
-      }}
-      searchClass="w-full"
-      enableSearch
-      countryCodeEditable
-      disableCountryCode={false}
-      placeholder={placeholder}
-      value={phone}
-      onChange={(value) => setPhone(value)}
-      inputClass={clsx(
-        className,
-        defaultStyle,
-        !className ? errorBorder : "!border-[#FD902B]",
-        "!w-full !border-2 focus:!shadow-[0_0_10px_rgba(0,0,0,0.1),_0_0_10px_rgba(0,0,0,0.7)] !transition-all",
-      )}
-      containerClass="!w-full !rounded-xl"
-      buttonClass="!bg-white !border-none !hover:bg-gray-100 !hover:rounded-l-2xl"
-      specialLabel=""
-      onFocus={() => setErrors((prev) => ({ ...prev, phone: undefined }))}
-      dropdownClass="custom-phone-dropdown"
-      dropdownStyle={{
-        borderRadius: "13px",
-        color: "#6F6F6F",
-        boxSizing: "border-box",
-        zIndex: 50,
-        overflowY: "scroll",
-        scrollbarWidth: "none",
-        maxHeight: "300px",
-        padding: "0 0 5px",
-      }}
-    />
+    <div ref={containerRef} className="relative">
+      <PhoneInput
+        country={defaultCountry}
+        searchPlaceholder={t("form.searchCountry")}
+        searchNotFound={t("form.searchCountryNotFound")}
+        searchStyle={{
+          width: "85%",
+          borderRadius: "10px",
+          padding: "10px",
+          color: "#6F6F6F",
+          border: "1px solid #D9D9D9",
+        }}
+        searchClass="w-full"
+        enableSearch
+        countryCodeEditable
+        disableCountryCode={false}
+        placeholder={placeholder}
+        value={phone}
+        onChange={(value) => setPhone(value)}
+        inputClass={clsx(
+          className,
+          defaultStyle,
+          !className ? errorBorder : "!border-[#FD902B]",
+          "!w-full !border-2 focus:!shadow-[0_0_10px_rgba(0,0,0,0.1),_0_0_10px_rgba(0,0,0,0.7)] !transition-all",
+        )}
+        containerClass="!w-full !rounded-xl"
+        buttonClass="!bg-white !border-none !hover:bg-gray-100 !hover:rounded-l-2xl"
+        specialLabel=""
+        onFocus={() => setErrors((prev) => ({ ...prev, phone: undefined }))}
+        dropdownClass="custom-phone-dropdown"
+        dropdownStyle={{
+          borderRadius: "13px",
+          color: "#6F6F6F",
+          boxSizing: "border-box",
+          zIndex: 50,
+          overflowY: "scroll",
+          scrollbarWidth: "none",
+          maxHeight: "300px",
+          padding: "0 0 5px",
+          ...dropdownStyle,
+        }}
+      />
+    </div>
   );
 };
 
