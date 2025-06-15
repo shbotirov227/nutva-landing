@@ -5,9 +5,17 @@ import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";
 import ProductImage from "@/assets/product-img.png";
 import HeroBg from "@/assets/hero-bg.png";
+import { FormModal } from "@/components/Modal";
 
 const HeroSection = () => {
   const { t } = useTranslation();
+
+  // const scrollToForm = () => {
+  //   const element = document.getElementById("form-section");
+  //   if (element) {
+  //     element.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
 
   return (
     <section
@@ -54,13 +62,15 @@ const HeroSection = () => {
               </CardContent>
             </Card>
 
-            <Button
-              className="w-full bg-[#FD902B] hover:bg-amber-600 text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl py-7 sm:py-4 md:py-6 lg:py- xl:py-7 px-6 sm:px-8 shadow-xl rounded-lg sm:rounded-xl transition-all duration-300 cursor-pointer font-semibold"
-              size="lg"
-              variant="destructive"
-            >
-              {t("button.heroButton")}
-            </Button>
+            <FormModal>
+              <Button
+                className="w-full bg-[#FD902B] hover:bg-amber-600 text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl py-7 sm:py-4 md:py-6 lg:py- xl:py-7 px-6 sm:px-8 shadow-xl rounded-lg sm:rounded-xl transition-all duration-300 cursor-pointer font-semibold"
+                size="lg"
+                variant="destructive"
+              >
+                {t("button.heroButton")}
+              </Button>
+            </FormModal>
           </div>
         </Container>
       </motion.div>

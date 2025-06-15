@@ -16,8 +16,11 @@ function App() {
   const { i18n } = useTranslation()
 
   useEffect(() => {
-    if (lang) {
-      i18n.changeLanguage(lang)
+    const langCode = lang ?? i18n.language
+    if (langCode && ['uz', 'ru'].includes(langCode)) {
+      i18n.changeLanguage(langCode)
+    } else {
+      i18n.changeLanguage('uz')
     }
   }, [lang, i18n])
 

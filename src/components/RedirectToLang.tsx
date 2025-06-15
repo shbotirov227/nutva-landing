@@ -1,13 +1,18 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function RedirectToLang() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const userLang = navigator.language.startsWith('ru') ? 'ru' : 'uz'
-    navigate(`/${userLang}`, { replace: true })
-  }, [])
+  const preferredLang = navigator.languages.find(l =>
+    l.startsWith('ru') || l.startsWith('uz')
+  );
+  const selectedLang = preferredLang?.startsWith('ru') ? 'ru' : 'uz';
+  navigate(`/${selectedLang}`, { replace: true });
+}, []);
 
-  return null
+
+  return null;
 }
+

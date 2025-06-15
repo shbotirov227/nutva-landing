@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 import BenefitsImage1 from "@/assets/benefits-img1.png";
 import BenefitsImage2 from "@/assets/benefits-img2.png";
 import BenefitsImage3 from "@/assets/benefits-img3.png";
 import BenefitsImage4 from "@/assets/benefits-img4.png";
 import BenefitsImage5 from "@/assets/benefits-img5.png";
 import Container from "@/components/Container";
-import { Button } from "@/components/ui/button";
+import { FormModal } from "./../components/Modal";
 
 const benefitsImages = [
   BenefitsImage1,
@@ -16,6 +18,9 @@ const benefitsImages = [
 ];
 
 const Benefits = () => {
+
+  const { t } = useTranslation();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -25,7 +30,7 @@ const Benefits = () => {
       className="text-white py-10"
     >
       <Container className="flex flex-col items-center gap-10">
-        
+
         <div className="w-full flex flex-wrap justify-center gap-6">
           {benefitsImages.map((item, index) => (
             <motion.div
@@ -44,14 +49,15 @@ const Benefits = () => {
             </motion.div>
           ))}
         </div>
-
-        <Button
-          size="lg"
-          variant="destructive"
-          className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-[40%] rounded-2xl bg-[#FD902B] hover:bg-amber-600 text-white text-base sm:text-lg md:text-xl py-5 sm:py-6 lg:py-7"
-        >
-          Buyurtma berish
-        </Button>
+        <FormModal>
+          <Button
+            size="lg"
+            variant="destructive"
+            className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-[40%] rounded-2xl bg-[#FD902B] hover:bg-amber-600 text-white text-base sm:text-lg md:text-xl py-5 sm:py-6 lg:py-7"
+          >
+            {t("button.heroButton")}
+          </Button>
+        </FormModal>
       </Container>
     </motion.div>
   );

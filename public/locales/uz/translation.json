@@ -51,13 +51,21 @@
         },
         "errors": {
             "nameRequired": "Ism kiritilishi shart",
-            "phoneRequired": "Telefon raqami to‘liq bo‘lishi kerak"
-        }
+            "phoneRequired": "Telefon raqami to'liq bo'lishi kerak"
+        },
+        "success": "Buyurtma muvaffaqiyatli qabul qilindi",
+        "fillAllFields": "Barcha maydonlarni to'ldiring"
+    },
+
+    "formModal": {
+        "title": "Farzandingiz salomatligiga oid savollaringiz bormi? Raqamingizni qoldiring.",
+        "subtitle": "Bizning malakali shifokorlarimiz sizga bepul maslahat berish uchun tez orada bog'lanadi."
     },
 
     "button": {
         "heroButton": "Buyurtma berish",
         "consultationButton": "Konsultatsiya olish",
-        "formButton": "Ariza qoldirish"
+        "formButton": "Ariza qoldirish",
+        "cancelButton": "Bekor qilish"
     }
 }

@@ -3,12 +3,14 @@ import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import HttpApi from 'i18next-http-backend'
 
+const supportedLanguages = ['uz', 'ru']
+
 i18n
   .use(HttpApi)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'ru',
+    fallbackLng: 'uz',
     debug: false,
 
     detection: {
@@ -23,6 +25,10 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+
+    supportedLngs: supportedLanguages,
+    nonExplicitSupportedLngs: true,
+    load: 'languageOnly',
   })
 
-export default i18n;
+export default i18n

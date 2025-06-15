@@ -1,41 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";
 import { mask } from "remask";
-import axios from "axios";
+import { toast } from "react-toastify";
 
 const FormSection = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [countryCode, setCountryCode] = useState("+998");
+  const [countryCode] = useState("+998");
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
   const { t } = useTranslation();
 
-  useEffect(() => {
-    axios.get("https://ipapi.co/json/")
-      .then((res) => {
-        const code = res.data.country_calling_code;
-        if (code) setCountryCode(code);
-      })
-      .catch((err) => {
-        console.error("IP orqali aniqlashda xatolik:", err);
-      });
-  }, []);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value;
-
-    let digitsOnly = rawValue.replace(/\D/g, "");
-
+    let digitsOnly = e.target.value.replace(/\D/g, "");
     const cleanedCountryCode = countryCode.replace(/\D/g, "");
+
     if (!digitsOnly.startsWith(cleanedCountryCode)) {
       digitsOnly = cleanedCountryCode + digitsOnly;
     }
 
     digitsOnly = digitsOnly.slice(0, cleanedCountryCode.length + 9);
-
     const dynamicMask = `${countryCode} (99) 999-99-99`;
     const masked = mask(digitsOnly, dynamicMask);
 
@@ -55,8 +41,8 @@ const FormSection = () => {
     if (
       digitsOnly === "" ||
       digitsOnly === cleanedCountryCode ||
-      digitsOnly.startsWith(cleanedCountryCode) &&
-      digitsOnly.length <= cleanedCountryCode.length + 1
+      (digitsOnly.startsWith(cleanedCountryCode) &&
+        digitsOnly.length <= cleanedCountryCode.length + 1)
     ) {
       setPhone("");
     }
@@ -65,28 +51,45 @@ const FormSection = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newErrors: { name?: string; phone?: string } = {};
-
-    if (!name.trim()) {
-      newErrors.name = t("form.errors.nameRequired") || "Ism kiritilishi kerak";
-    }
-
+    const trimmedName = name.trim();
     const digitsOnly = phone.replace(/\D/g, "");
     const cleanedCode = countryCode.replace(/\D/g, "");
     const phoneLength = digitsOnly.length - cleanedCode.length;
 
-    if (!digitsOnly || phoneLength < 9) {
-      newErrors.phone = t("form.errors.phoneRequired") || "To‘liq telefon raqam kiritilishi kerak";
+    const isNameEmpty = !trimmedName;
+    const isPhoneInvalid = !digitsOnly || phoneLength < 9;
+
+    if (isNameEmpty && isPhoneInvalid) {
+      toast.error(t("form.fillAllFields") || "Barcha maydonlarni to'ldiring");
+      setErrors({
+        name: t("form.errors.nameRequired"),
+        phone: t("form.errors.phoneRequired"),
+      });
+      return;
     }
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+    if (isNameEmpty) {
+      const nameError = t("form.errors.nameRequired") || "Ism kiritilishi shart";
+      toast.error(nameError);
+      setErrors({ name: nameError });
+      return;
+    }
+
+    if (isPhoneInvalid) {
+      const phoneError =
+        t("form.errors.phoneRequired") || "Telefon raqami to'liq bo'lishi kerak";
+      toast.error(phoneError);
+      setErrors({ phone: phoneError });
       return;
     }
 
     setErrors({});
-    console.log("Yuborildi:", { name, phone });
+    toast.success(t("form.success") || "Buyurtma muvaffaqiyatli qabul qilindi");
+    setName("");
+    setPhone("");
   };
+
+
 
   return (
     <motion.div
@@ -96,7 +99,7 @@ const FormSection = () => {
       viewport={{ once: true }}
       className="text-white text-2xl"
     >
-      <section className="w-full py-10 pb-16">
+      <section id="form-section" className="w-full py-10 pb-16">
         <Container>
           <div className="bg-[#FD902B] rounded-3xl shadow-xl px-4 sm:px-8 md:px-14 lg:px-20 py-10 max-w-[95%] sm:max-w-3xl md:max-w-4xl lg:max-w-5xl mx-auto">
             <h2 className="text-white text-[24px] sm:text-[32px] md:text-[36px] font-bold text-center mb-3">
